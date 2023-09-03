@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-@*zdivic2gcibl!+eic7=h^cey0nyrdt7+en5-83w*y4!6kph8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '15.161.1.204','internity2-dev.eu-south-1.elasticbeanstalk.com', 'api.internity.com.tr']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '15.161.1.204', 'internity2-dev.eu-south-1.elasticbeanstalk.com',
+                 'api.internity.com.tr']
 
 # Application definition
 
@@ -36,15 +37,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+APPS = [
     'users.apps.UsersConfig',
     'interns.apps.InternsConfig',
     'recruiters.apps.RecruitersConfig',
     'companies.apps.CompaniesConfig',
+    'jobs.apps.JobsConfig',
+]
+
+THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
 ]
+
+INSTALLED_APPS = INSTALLED_APPS + APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
