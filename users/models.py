@@ -22,7 +22,7 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError("Email must be set")
         email = self.normalize_email(email)
-        user = self.model(email=email, isStaff=True, is_superuser=True)
+        user = self.model(email=email, is_staff=True, is_superuser=True)
         user.set_password(password)
         user.save()
 
@@ -40,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     userId = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
     email = models.EmailField(max_length=255, unique=True)
     role = models.CharField(max_length=255, choices=roles, default='intern')
-    isStaff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     isActive = models.BooleanField(default=False)
     isVerified = models.BooleanField(default=False)
     createdAt = models.DateTimeField(default=timezone.now)

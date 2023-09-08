@@ -12,8 +12,6 @@ from companies.serializers import CompanySerializer
 
 
 # Create your views here.
-
-
 class CompanyRegister(APIView):
     permission_classes = [AllowAny]
     authentication_classes = [JWTAuthentication]
@@ -57,3 +55,30 @@ class CompanyProfile(APIView):
             return Response(serializer.errors, status=400)
         except Company.DoesNotExist:
             return Response({'error': 'You have not created a company yet'}, status=400)
+
+
+class CompanyList(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        companies = Company.objects.all()
+        serializer = CompanySerializer(companies, many=True)
+        return Response(serializer.data, status=200)
+
+
+class CompanyDetail(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = [JWTAuthentication]
+
+    @staticmethod
+    def get(request, pk, *args, **kwargs):
+        try:
+            company = Company.objects.get(pk=pk)
+            serializer = CompanySerializer(company)
+            return Response(serializer.data, status=200)
+        except Company.DoesNotExist:
+            return Response({'error': 'Company does not exist'}, status=400)
+
+

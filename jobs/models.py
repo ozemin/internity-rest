@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from companies.models import Company
 from recruiters.models import Recruiter
+from interns.models import Intern
 
 
 class Job(models.Model):
@@ -29,6 +30,22 @@ class Job(models.Model):
         ordering = ['-createdAt']
 
 
+class JobApplication(models.Model):
+    applicationId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    intern = models.ForeignKey(Intern, on_delete=models.CASCADE)
+    status = models.CharField(max_length=100)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.job.title + " " + self.intern.firstName + " " + self.intern.lastName
+
+    class Meta:
+        db_table = 'JobApplications'
+        verbose_name = 'JobApplication'
+        verbose_name_plural = 'JobApplications'
+        ordering = ['-createdAt']
 
 
 

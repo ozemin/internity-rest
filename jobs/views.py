@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import AllowAny
 
-from jobs.models import Job
+from jobs.models import Job, JobApplication
 
-from jobs.serializers import JobSerializer
+from jobs.serializers import JobSerializer, JobApplicationSerializer
 
 
 class JobCreate(APIView):
@@ -61,3 +61,20 @@ class JobList(APIView):
         jobs = Job.objects.all()
         serializer = JobSerializer(jobs, many=True)
         return Response(serializer.data, status=200)
+
+
+class JobApplicationCreate(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = [JWTAuthentication]
+
+    @staticmethod
+    def post(request, pk):
+        job = Job.objects.get(pk=pk)
+        serializer = JobApplicationSerializer(data=request.data, context={'request': request})
+        print(serializer.validate(request.data))
+
+
+        if serializer.is_valid() and request.user.intern:
+            serializer.save(job=job, intern=request.user.intern)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=422)
