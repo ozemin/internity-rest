@@ -17,6 +17,8 @@ class TokenObtainPairSerializer(serializers.Serializer):
         password = attrs.get('password')
 
         user = User.objects.filter(email=email).first()
+        role = user.role
+
 
         if user is None:
             raise serializers.ValidationError("Kullanıcı bulunamadı")
@@ -27,7 +29,10 @@ class TokenObtainPairSerializer(serializers.Serializer):
 
 
         data = {}
+        # refresh token with user and role
         refresh = RefreshToken.for_user(user)
+        refresh['role'] = role
+        refresh['maminin en yakin arkadasi'] = 'ömer'
         data['access'] = str(refresh.access_token)
         data['refresh'] = str(refresh)
 

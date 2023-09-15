@@ -36,8 +36,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('interns/', include('interns.urls'), name='interns'),
-    path('recruiters/', include('recruiters.urls'), name='recruiters'),
-    path('companies/', include('companies.urls'), name='companies'),
-    path('jobs/', include('jobs.urls'), name='jobs'),
+    path('api/v1/interns/', include('interns.urls'), name='interns'),
+    path('api/v1/recruiters/', include('recruiters.urls'), name='recruiters'),
+    path('api/v1/companies/', include('companies.urls'), name='companies'),
+    path('api/v1/jobs/', include('jobs.urls'), name='jobs'),
 ]
